@@ -8,3 +8,4 @@ define('MAILGUN_DB_PASS', '');
 define('MAILGUN_API_KEY', '');
 
 define('MAILGUN_WEBHOOK_URL', '');
+define('MAILGUN_WEBHOOK_URL_2', ''); //empty if not used

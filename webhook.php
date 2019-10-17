@@ -2,6 +2,7 @@
 require 'defines.php';
 require 'lib' . DIRECTORY_SEPARATOR . 'DB.php';
 require 'lib' . DIRECTORY_SEPARATOR . 'MailGunProcessWebhook.php';
+require 'lib' . DIRECTORY_SEPARATOR . 'EmailStatus.php';
 
 $json_params = file_get_contents("php://input");
 

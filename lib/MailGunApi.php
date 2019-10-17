@@ -107,7 +107,13 @@ class MailGunApi {
             'url' => MAILGUN_WEBHOOK_URL,
         );
 
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+        $postData = http_build_query($data);
+
+        if (!empty(MAILGUN_WEBHOOK_URL_2)) {
+            $postData .= '&'.http_build_query(array('url'=>MAILGUN_WEBHOOK_URL_2));
+        }
+
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         $server_output = curl_exec($ch);

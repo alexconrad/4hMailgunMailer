@@ -23,6 +23,7 @@
             <td>
                 <a href="<?php echo Common::link('ManageDomains', 'deleteHook', array('domain_id' => $send['domain_id'])); ?>">Delete Hooks</a>
                 <a href="<?php echo Common::link('ManageDomains', 'addHook', array('domain_id' => $send['domain_id'])); ?>">Add Hooks</a>
+                <a href="<?php echo Common::link('ManageDomains', 'recreateHook', array('domain_id' => $send['domain_id'])); ?>">Recreate Hooks</a>
 
             </td>
         </tr>
