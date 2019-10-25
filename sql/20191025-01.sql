@@ -1,0 +1,1 @@
+ALTER TABLE `mailgun_lists` ADD COLUMN `nr_bad` INT(10) UNSIGNED NOT NULL DEFAULT '0' AFTER `nr_emails`;

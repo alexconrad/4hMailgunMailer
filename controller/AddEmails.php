@@ -69,11 +69,12 @@ class AddEmails
         $emails = array_map('trim', $emails);
 
         $totalListEmails = 0;
+        $totalListBadEmails = 0;
 
         while (!empty($emails)) {
 
             $toInsert = array();
-            while ((count($toInsert) < 10) && (!empty($emails))) {
+            while ((count($toInsert) < 500) && (!empty($emails))) {
                 $poped = array_pop($emails);
                 $poped = trim($poped);
                 if ($poped != '') {
@@ -81,7 +82,7 @@ class AddEmails
                 }
             }
 
-            $query = /** @lang text */ "INSERT IGNORE INTO mailgun_emails (email,dated,email_status) VALUES ";
+            $query = /** @lang text */ "INSERT INTO mailgun_emails (email,dated,email_status) VALUES ";
             $parts_insert = [];
             $parts_select = [];
             $binds = [];
@@ -91,6 +92,7 @@ class AddEmails
                 $binds['email' . $key] = $value;
             }
             $query .= implode(' , ', $parts_insert);
+            $query .= ' ON DUPLICATE KEY UPDATE email_status = VALUES(email_status)';
             Db::instance()->write($query, $binds);
 
             $query = "SELECT email_id, email FROM mailgun_emails WHERE email IN (" . implode(',', $parts_select) . ") AND email_status = 0";
@@ -115,11 +117,14 @@ class AddEmails
                 Db::instance()->write($query, $list_binds);
             }
 
+            $query = "SELECT COUNT(1) AS nr FROM mailgun_emails WHERE email IN (" . implode(',', $parts_select) . ") AND email_status != 0";
+            $rows = Db::instance()->all($query, $binds);
+            $totalListBadEmails += $rows[0]['nr'];
+
         }
 
-        $query = "UPDATE mailgun_lists SET nr_emails = :nremails WHERE list_id = :listid";
-        Db::instance()->write($query, array('nremails' => $totalListEmails, 'listid' => $list_id));
-
+        $query = "UPDATE mailgun_lists SET nr_emails = :nremails, nr_bad = :nrbad WHERE list_id = :listid";
+        Db::instance()->write($query, array('nremails' => $totalListEmails, 'nrbad'=>$totalListBadEmails, 'listid' => $list_id));
 
         header("Location: index.php?c=CreateMessage&a=index");
         die();

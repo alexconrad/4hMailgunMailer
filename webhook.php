@@ -30,6 +30,9 @@ switch ($webhookName) {
     case 'failed':
         MailGunProcessWebhook::failed($json_payload);
         break;
+    case 'complained':
+        MailGunProcessWebhook::complaint($json_payload);
+        break;
 
     default:
         http_response_code(404);

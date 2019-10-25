@@ -89,6 +89,9 @@ class MailGunProcessWebhook {
 
     public static function complaint($json_payload) {
 
+        //EXAMPLE:
+        // {"signature": {"timestamp": "1571373601", "token": "9aba649bf1afac43a1fe52253b38593ad440426708cfdab793", "signature": "cc52feee3dba708bf0f4fd2b0fdefdc35e096e9a26022627549c99077a555bfc"}, "event-data": {"tags": [], "timestamp": 1571345097.448022, "envelope": {"sending-ip": "198.61.254.1"}, "recipient-domain": "hotmail.com", "id": "Sk4C2z_7QuiqHW4TaQZVlg", "campaigns": [], "user-variables": {"send_id": "17", "sent_id": "1045"}, "log-level": "warn", "message": {"headers": {"to": "juanchoramirez38792@hotmail.com", "message-id": "20191017185816.1.DDAB0DFE5A75719C@my.vipdatelink.com", "from": "Flirt@my.vipdatelink.com", "subject": "New Message From Sara"}, "attachments": [], "size": 15832}, "recipient": "juanchoramirez38792@hotmail.com", "event": "complained"}}
+
         $sent_id = $json_payload['event-data']['user-variables']['sent_id'];
         if (!empty($sent_id)) {
 
